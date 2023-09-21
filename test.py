@@ -6,16 +6,23 @@ import math
 window_width = 800
 window_height = 600
 
+# Angle for petal rotation (initially set to 0)
+rotation_angle = 0.0
+
 
 def draw_petals():
-    draw_circle(0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(-0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(-0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(0.0, 0.35, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(0.0, -0.35, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(-0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0)
+    global rotation_angle  # Use the global rotation_angle variable
+    draw_circle_with_rotation(0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(-0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(-0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(0.0, 0.35, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(0.0, -0.35, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle_with_rotation(-0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+
+    # Increment the rotation angle for the next frame
+    rotation_angle += 1.0  # You can adjust the rotation speed here
 
 
 def draw_stalk():
@@ -30,6 +37,30 @@ def draw_stalk():
 
     # Draw the stalk as a rectangle
     glRectf(x_left, y_bottom, x_right, y_top)
+
+
+def draw_circle_with_rotation(c_x, c_y, rad, n, red, green, blue, angle_degrees):
+    # Set the color for the circle
+    glColor3f(red, green, blue)
+
+    # Define the circle's center and radius
+    center_x, center_y = c_x, c_y
+    radius = rad
+    num_segments = n  # Number of line segments to approximate the circle
+
+    # Apply rotation to the petal positions
+    angle_radians = math.radians(angle_degrees)
+    rotated_x = center_x * math.cos(angle_radians) - center_y * math.sin(angle_radians)
+    rotated_y = center_x * math.sin(angle_radians) + center_y * math.cos(angle_radians)
+
+    # Draw the circle using line segments with rotation
+    glBegin(GL_POLYGON)
+    for i in range(num_segments):
+        theta = 2.0 * math.pi * i / num_segments
+        x = rotated_x + radius * math.cos(theta)
+        y = rotated_y + radius * math.sin(theta)
+        glVertex2f(x, y)
+    glEnd()
 
 
 def display():
@@ -50,36 +81,18 @@ def display():
 
     draw_stalk()
     draw_petals()
-    draw_circle(0.0, 0.0, 0.35, 100, 1.0, 1.0, 1.0)
+    draw_circle_with_rotation(0.0, 0.0, 0.35, 100, 1.0, 1.0, 1.0, 0.0)
     glutSwapBuffers()
-
-
-def draw_circle(c_x, c_y, rad, n, red, green, blue):
-    # Set the color for the circle
-    glColor3f(red, green, blue)  # Blue color
-
-    # Define the circle's center and radius
-    center_x, center_y = c_x, c_y
-    radius = rad
-    num_segments = n  # Number of line segments to approximate the circle
-
-    # Draw the circle using line segments
-    glBegin(GL_POLYGON)
-    for i in range(num_segments):
-        theta = 2.0 * math.pi * i / num_segments
-        x = center_x + radius * math.cos(theta)
-        y = center_y + radius * math.sin(theta)
-        glVertex2f(x, y)
-    glEnd()
 
 
 def main():
     glutInit()
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB)
     glutInitWindowSize(window_width, window_height)
-    glutCreateWindow("Perfect Circles Drawing")
+    glutCreateWindow("Rotating Petals")
 
     glutDisplayFunc(display)
+    glutIdleFunc(display)  # Call display function continuously
     glutMainLoop()
 
 
