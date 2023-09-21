@@ -10,7 +10,7 @@ window_height = 600
 rotation_angle = 0.0
 
 # Angle increment for keyboard rotation
-rotation_increment = 1.0  # You can adjust the rotation speed here
+rotation_increment = 1.0
 
 
 def draw_petals():
@@ -26,7 +26,7 @@ def draw_petals():
 
 
 def draw_stalk():
-    glColor3f(0.0, 1.0, 0.0)  # Set the color for the stalk (green)
+    glColor3f(0.0, 1.0, 0.0)
     x_left = -0.05
     x_right = 0.05
     y_bottom = -1.0
@@ -35,12 +35,12 @@ def draw_stalk():
 
 
 def draw_circle(c_x, c_y, rad, n, red, green, blue):
-    glColor3f(red, green, blue)  # Set the color for the circle
+    glColor3f(red, green, blue)
     center_x, center_y = c_x, c_y
     radius = rad
     num_segments = n
 
-    glBegin(GL_POLYGON)  # Draw the circle using line segments
+    glBegin(GL_POLYGON)
     for i in range(num_segments):
         theta = 2.0 * math.pi * i / num_segments
         x = center_x + radius * math.cos(theta)
@@ -63,13 +63,12 @@ def display():
 
     glMatrixMode(GL_MODELVIEW)
 
-    glPushMatrix()  # Push the current modelview matrix
+    glPushMatrix()
 
-    # Apply rotation to the petals
     glRotatef(rotation_angle, 0, 0, 1)
     draw_petals()
 
-    glPopMatrix()  # Pop the modelview matrix
+    glPopMatrix()
 
     draw_stalk()
     draw_circle(0.0, 0.0, 0.35, 100, 1.0, 1.0, 1.0)
@@ -80,16 +79,13 @@ def display():
 def keyboard(key, x, y):
     global rotation_angle
     if key == b" ":
-        # Reset rotation when spacebar is pressed
         rotation_angle = 0.0
     elif key == GLUT_KEY_RIGHT:
-        # Rotate petals to the right when the right arrow key is pressed
         rotation_angle += rotation_increment
     elif key == GLUT_KEY_LEFT:
-        # Rotate petals to the left when the left arrow key is pressed
         rotation_angle -= rotation_increment
 
-    glutPostRedisplay()  # Trigger a redraw
+    glutPostRedisplay()
 
 
 def main():
@@ -100,7 +96,7 @@ def main():
 
     glutDisplayFunc(display)
     glutIdleFunc(display)
-    glutSpecialFunc(keyboard)  # Register the keyboard function for special keys
+    glutSpecialFunc(keyboard)
     glutMainLoop()
 
 
