@@ -8,14 +8,28 @@ window_height = 600
 
 
 def draw_petals():
-    draw_circle(0.35, 0.35, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(0.35, -0.35, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(-0.35, 0.35, 0.20, 100, 1.0, 0.0, 0.0)
-    draw_circle(-0.35, -0.35, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(-0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(-0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0)
     draw_circle(0.0, 0.35, 0.20, 100, 1.0, 0.0, 0.0)
     draw_circle(0.0, -0.35, 0.20, 100, 1.0, 0.0, 0.0)
     draw_circle(0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0)
     draw_circle(-0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0)
+
+
+def draw_stalk():
+    # Set the color for the stalk (green)
+    glColor3f(0.0, 1.0, 0.0)
+
+    # Define the stalk's dimensions
+    x_left = -0.05
+    x_right = 0.05
+    y_bottom = -1.0
+    y_top = -0.25
+
+    # Draw the stalk as a rectangle
+    glRectf(x_left, y_bottom, x_right, y_top)
 
 
 def display():
@@ -34,9 +48,9 @@ def display():
 
     glMatrixMode(GL_MODELVIEW)
 
+    draw_stalk()
     draw_petals()
     draw_circle(0.0, 0.0, 0.35, 100, 1.0, 1.0, 1.0)
-
     glutSwapBuffers()
 
 
