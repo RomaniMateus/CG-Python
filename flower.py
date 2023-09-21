@@ -15,14 +15,14 @@ rotation_increment = 1.0  # You can adjust the rotation speed here
 
 def draw_petals():
     global rotation_angle
-    draw_circle_with_rotation(0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(-0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(-0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(0.0, 0.35, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(0.0, -0.35, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
-    draw_circle_with_rotation(-0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0, rotation_angle)
+    draw_circle(0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(-0.25, 0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(-0.25, -0.25, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(0.0, 0.35, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(0.0, -0.35, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0)
+    draw_circle(-0.35, 0.0, 0.20, 100, 1.0, 0.0, 0.0)
 
 
 def draw_stalk():
@@ -34,21 +34,17 @@ def draw_stalk():
     glRectf(x_left, y_bottom, x_right, y_top)
 
 
-def draw_circle_with_rotation(c_x, c_y, rad, n, red, green, blue, angle_degrees):
+def draw_circle(c_x, c_y, rad, n, red, green, blue):
     glColor3f(red, green, blue)  # Set the color for the circle
     center_x, center_y = c_x, c_y
     radius = rad
     num_segments = n
 
-    angle_radians = math.radians(angle_degrees)  # Convert angle to radians
-    rotated_x = center_x * math.cos(angle_radians) - center_y * math.sin(angle_radians)
-    rotated_y = center_x * math.sin(angle_radians) + center_y * math.cos(angle_radians)
-
-    glBegin(GL_POLYGON)  # Draw the circle using line segments with rotation
+    glBegin(GL_POLYGON)  # Draw the circle using line segments
     for i in range(num_segments):
         theta = 2.0 * math.pi * i / num_segments
-        x = rotated_x + radius * math.cos(theta)
-        y = rotated_y + radius * math.sin(theta)
+        x = center_x + radius * math.cos(theta)
+        y = center_y + radius * math.sin(theta)
         glVertex2f(x, y)
     glEnd()
 
@@ -67,9 +63,16 @@ def display():
 
     glMatrixMode(GL_MODELVIEW)
 
-    draw_stalk()
+    glPushMatrix()  # Push the current modelview matrix
+
+    # Apply rotation to the petals
+    glRotatef(rotation_angle, 0, 0, 1)
     draw_petals()
-    draw_circle_with_rotation(0.0, 0.0, 0.30, 100, 1.0, 1.0, 1.0, 0.0)
+
+    glPopMatrix()  # Pop the modelview matrix
+
+    draw_stalk()
+    draw_circle(0.0, 0.0, 0.35, 100, 1.0, 1.0, 1.0)
 
     glutSwapBuffers()
 
