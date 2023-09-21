@@ -69,7 +69,7 @@ def display():
 
     draw_stalk()
     draw_petals()
-    draw_circle_with_rotation(0.0, 0.0, 0.35, 100, 1.0, 1.0, 1.0, 0.0)
+    draw_circle_with_rotation(0.0, 0.0, 0.30, 100, 1.0, 1.0, 1.0, 0.0)
 
     glutSwapBuffers()
 
