@@ -14,7 +14,7 @@ body_y = 0.0
 
 def draw_upper_body():
     glColor3f(0.235, 0.431, 0.392)
-    glRectf(body_x - 0.2, body_y - 0.7, body_x + 0.2, body_y + 0.1)
+    glRectf(body_x - 0.2, body_y - 0.5, body_x + 0.2, body_y + 0.1)
 
 
 def draw_right_arm():
@@ -35,6 +35,14 @@ def draw_head():
     glRectf(body_x - 0.1, body_y + 0.33, body_x + 0.1, body_y + 0.12)
 
 
+def draw_legs():
+    glColor3f(0.176, 0.443, 0.6)
+    glRectf(body_x - 0.1, body_y - 0.5, body_x - 0.2, body_y - 0.9)
+
+    glColor3f(0.176, 0.443, 0.6)
+    glRectf(body_x + 0.1, body_y - 0.5, body_x + 0.2, body_y - 0.9)
+
+
 def display():
     glClear(GL_COLOR_BUFFER_BIT)
 
@@ -51,8 +59,11 @@ def display():
 
     draw_upper_body()
     draw_head()
+    draw_legs()
+
     draw_right_arm()
     draw_left_arm()
+
     glutSwapBuffers()
 
 
