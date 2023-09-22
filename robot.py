@@ -6,10 +6,12 @@ import math
 window_width = 800
 window_height = 600
 
-move_speed = 0.01
+rotation_angle = 0.0
 
 body_x = 0.0
 body_y = 0.0
+
+rotation_increment = 180
 
 
 def draw_upper_body():
@@ -61,20 +63,40 @@ def display():
     draw_head()
     draw_legs()
 
+    # Moving arms up and down
+    glPushMatrix()
+    glRotatef(rotation_angle, 0, 0, 1)
     draw_right_arm()
     draw_left_arm()
+    glPopMatrix()
+
+    # Moving robot left and right
+    glPushMatrix()
+    glTranslatef(body_x, body_y, 0)
+    glPopMatrix()
+
+    # Moving legs to make the impression of walking
+    glPushMatrix()
+    glRotatef(rotation_angle, 0, 0, 1)
+    # draw_legs()
+    glPopMatrix()
 
     glutSwapBuffers()
 
 
 def keyboard(key, x, y):
+    global rotation_angle
     global body_x
     if key == b" ":
-        body_x = 0.0
+        rotation_angle = 0.0
+    elif key == GLUT_KEY_UP:
+        rotation_angle -= rotation_increment
+    elif key == GLUT_KEY_DOWN:
+        rotation_angle += rotation_increment
     elif key == GLUT_KEY_LEFT:
-        body_x -= move_speed
+        body_x -= 0.05
     elif key == GLUT_KEY_RIGHT:
-        body_x += move_speed
+        body_x += 0.05
 
     glutPostRedisplay()
 
